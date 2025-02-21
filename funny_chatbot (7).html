@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whats cookin good lookin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        #chatContainer {
+            width: 50%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #chatBox {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+        #thinkingBubble {
+            display: none;
+            font-size: 24px;
+            color: gray;
+            margin-top: 20px;
+        }
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatContainer">
+        <h2>Funny Chatbot</h2>
+        <div id="chatBox"></div>
+        <div id="thinkingBubble">🤔 Thinking...</div>
+        <input type="text" id="userInput" placeholder="Type your message here..." />
+        <button onclick="chat()">Send</button>
+    </div>
+    
+    <script>
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        const funnyResponses = [
+            "Oh, you think you have problems? Tell that to my WiFi signal.",
+            "I’d agree with you, but then we’d both be wrong.",
+            "Common sense is like deodorant. The people who need it most never use it.",
+            "You bring everyone so much joy… when you leave the room.",
+            "You're proof that even evolution takes a break sometimes.",
+            "I’d explain it to you, but I left my crayons at home.",
+            "Oh, you’re waiting for my response? Keep waiting.",
+            "Your secrets are safe with me. I never even listen when you tell me them."
+        ];
+
+        function getFunnyResponse(input) {
+            shuffleArray(funnyResponses);
+            const isQuestion = input.includes("?");
+            const randomIndex = Math.floor(Math.random() * funnyResponses.length);
+            
+            if (isQuestion) {
+                return "That's a great question! But let's be real, do we really need answers? Here's something funny: " + funnyResponses[randomIndex];
+            } else {
+                return funnyResponses[randomIndex];
+            }
+        }
+
+        function chat() {
+            shuffleArray(funnyResponses);
+            const userInput = document.getElementById("userInput").value;
+            const chatBox = document.getElementById("chatBox");
+            const thinkingBubble = document.getElementById("thinkingBubble");
+            
+            if (userInput.trim() === "") return;
+            
+            const userMessage = `<p><strong>You:</strong> ${userInput}</p>`;
+            chatBox.innerHTML += userMessage;
+            
+            document.getElementById("userInput").value = "";
+            thinkingBubble.style.display = "block";
+            
+            setTimeout(() => {
+                const botMessage = `<p><strong>Bot:</strong> ${getFunnyResponse(userInput)}</p>`;
+                chatBox.innerHTML += botMessage;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                thinkingBubble.style.display = "none";
+            }, 5000);
+        }
+
+        document.getElementById("userInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                chat();
+            }
+        });
+    </script>
+</body>
+</html>
